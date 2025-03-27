@@ -3,7 +3,6 @@ package com.example.rp3_2d_simulace_zvuku_v_mistnosti;
 public class Point {
     private double x;
     private double y;
-    private int okamzitaVychylka;
     private Calculator calculator = new Calculator();
 
     public Point(double x, double y) {
