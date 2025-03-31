@@ -1,0 +1,16 @@
+\subsection{MainMenuController}
+Tato třída slouží jako controller ke třídě \textit{MainMenu}, to znamená že se stará o dynamické aktualizování \textit{VBoxu} (grafické rozhraní) a uživatelské interakce pomocí tlačítek \textit{setSceneDimensions(int height, int width)}, \textit{setStage(Stage stage)}, \textit{updateLayout()}, \textit{handleButtonRoom0Click()} a \\
+\textit{handleButtonRoom1Click()}. \newline
+
+\underline{\textbf{\textit{setSceneDimensions(int height, int width)}}}\\
+Předává \textit{stage} z třídy \textit{MainMenu} do controlleru. To umožnuje controlleru starat se o změnu \textit{stage} nebo změnu scény.
+
+\vspace{0.3cm}
+
+\underline{\textbf{\textit{updateLayout()}}}\\
+Toto je privátní metoda, která je zodpovědná za vypočítávání rozměrů a dynamické aktualizování \textit{VBoxu} vzhledem k velikosti scény. 
+
+\vspace{0.3cm}
+
+\underline{\textbf{\textit{handleButtonRoom0Click()}}}\\
+Metoda se zavolá pokud uživatel klikne na tlačítko s názvem \textit{MÍSTNOST 1}. Metoda vytvoří novou instanci třídy \textit{Room0} a přesměruje uživatele na příslušnou scénu. To samé dělá i metoda handleButtonRoom1Click(), s rozdí-lem že tato metoda přesměruje uživatele do jiné místnosti. 

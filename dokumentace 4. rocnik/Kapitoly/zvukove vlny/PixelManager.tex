@@ -1,0 +1,25 @@
+\subsection{PixelManager}
+Tato třída slouží ke spravování celého 2D pole pixelů. Mezi její funkce patří například inicializace pole, aktualizování jednotlivých pixelů nebo resetování všech neaktivních pixelů. Mezi klíčové atributy patří: 
+\begin{itemize}
+    \item \textit{Pixel[ ][ ] pixelGrid} - představuje 2D pole pixelů v místnosti
+    \item \textit{int width} - šířka pole
+    \item \textit{int height} - výška pole
+    \item \textit{BaseRoomControllerInterface roomController} - zpřístupňuje metody a proměnné z jednotlivých controllerů např. \textit{Pane centerPane} 
+    \item \textit{int PIXELSIZE} - konstanta reprezentující velikost jednoho pixelu
+\end{itemize}
+Třída má celkem 6 metod.\\
+\\
+\textbf{\textit{initializePixelGrid(int rectWidth, int rectHeight, double rectX, double rectY)}}\\
+Tato metoda inicializuje \textit{pixelGrid}, to znamená, že se připíšou jednotlivé pixely na správně pozice do místnosti i do \textit{pixelGridu}. Metoda se volá ve třídách \textit{Room0/1Controller}, konkrétně v metodě \textit{initializeRectangle}.\\
+\\
+\textbf{\textit{addRectanglesToPane(Pane pane)}}\\
+Přidá všechny pixely na scénu pomocí \textit{pane}. Je také použita ve třídách \textit{Room0/1Controller} v metodě \textit{initializeRectangle}.\\
+\\
+\textbf{\textit{resetPixelGridDisplacement()}}\\
+Zodpovídá za resetování všech pixelů. To znamená, že pro každý pixel zavolá metodu \textit{setDefault()}. Metoda se volá v \textit{Room0/1Controllerech} v metodě \textit{handleButtonResetClick()}.\\
+\\
+\textbf{\textit{resetAllInactivePixels(Set activePixelCoordinates)}}\\
+Účel této metody je resetování všech pixelů, které nejsou momentálně v žádné vlně. Metoda projde celý \textit{pixelGrid} a pro každý pixel získá jeho \textit{PixelCoordinate} a zjistí zda jsou dané souřadnice napsané v setu \textit{activePixelCoordinates}. Pokud jsou, tak se nic neděje a pokud nejsou, je daný  pixel vynulován (zavolá se metoda \textit{setDefault()})\\
+\\
+\textbf{\textit{getPixelSize(), getPixelGrid()}}\\
+Slouží jako \textit{gettery} pro \textit{PIXELSIZE} a \textit{pixelGrid}.

@@ -1,0 +1,16 @@
+\subsection{Launcher}
+Třída \textit{Launcher} je potomek třídy \textit{Application}, která je základní třídou potřebnou k vytvoření JavaFX aplikace. To znamená, že musí mít metodu \textit{start}, která je zodpovědná za samotné spouštění aplikace. Tato třída má pouze dvě metody viz. níže. 
+
+\begin{minted}{java}
+         @Override
+    public void start(Stage stage) throws IOException {
+        MainMenu hlavniMenu = new MainMenu();
+        hlavniMenu.setScene(stage);
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+\end{minted}
+
+

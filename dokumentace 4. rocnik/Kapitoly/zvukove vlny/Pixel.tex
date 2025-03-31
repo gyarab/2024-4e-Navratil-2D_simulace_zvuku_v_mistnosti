@@ -1,0 +1,43 @@
+\subsection{Pixel}
+Třída \textit{Pixel} znázorňuje zvětšený individuální pixel v místnosti. Je  potomkem třídy \textit{Rectangle} to proto, aby byla jednoduchá změna barvy či přidávání na scénu. 
+Třída má následující atributy:
+\begin{itemize}
+    \item \textit{gridX/Y} -  pozice v gridu neboli 2D poli místnosti 
+    \item \textit{realX/Y} -  reálná pozice na scéně
+    \item \textit{celkovaVychylka} -  celková výchylka v bodě
+    \item \textit{PIXELSIZE} - velikost pixelu
+    \item \textit{rectangle} - vizuální reprezentace pixelu
+\end{itemize}
+
+Celkem má třída 8 metod, z nichž každá plní specifickou funkci.\\
+
+\textbf{\textit{setPixelSize(int pixelSize)}}\\
+Nastaví velikost pixelu.
+
+\vspace{0.3cm}
+\textbf{\textit{getGridY/X(double realY/X, double y/xMIn)}}\\
+Vrátí hodnoty \textit{gridX/Y}. 
+
+\vspace{0.3cm}
+\textbf{\textit{getRectangle()}}\\
+Vrátí samotní obdelník.
+
+\vspace{0.3cm}
+\textbf{\textit{setColor(int celkovaVychylka)}}\\
+Přiřadí barvu vzhledem k velkové výchylce.
+
+\vspace{0.3cm}
+\textbf{\textit{setDefault()}}\\
+Nastaví celkovou výchylku na 0.
+
+\vspace{0.3cm}
+\textbf{\textit{addVychylka(int vychylka)}}\\
+Přidá výchylku do celkové výchylky.
+
+\vspace{0.3cm}
+\textbf{\textit{createColor(int celkovaVychylka)}}\\
+Přiřadí barvu k celkové výchylce pomocí if - elseif řetězce. Pokud je celková výchylka menší než -20 tak metoda vrátí modrou barvu (čím je to menší tím je modrá víc sytá), když je celková výchylka větší než 20 tak metoda vrátí červenou (čím je výchylka větší tím je červená sytější) a pokud je hodnota mezi -20 a 20 tak se vrátí bílá barva. Metoda přiřadí výchylku do intervalu od 400 do -400. Podle toho jak velká výchylka bude, tak se ji přiřadí příslušná barva.
+
+\vspace{0.3cm}
+\textbf{\textit{getCoordinates()}}\\
+Vrátí instanci třídy \textit{PixelCoordinate} se souřadnicemi pixelu viz. kapitola 4.12.

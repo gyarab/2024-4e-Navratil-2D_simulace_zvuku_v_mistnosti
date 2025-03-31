@@ -1,0 +1,61 @@
+\subsection{WaveManager}
+Třída \textit{WaveManager}, jak z názvu vyplývá, funguje jako manažer pro všechny vlny na scéně. Stará se o aktualizaci scény nebo vytváření, odstraňování a odrazy vln. Dále je zodpovědná za zastavování, spouštění a resetování simulace když uživatel klikne na příslušná tlačítka.
+
+\subsubsection{Vytváření}
+K vytvoření individuální vlny se používá metoda \textit{createWave(double x, double y, BaseRoomControllerInterface controller, int radius, int amplitude)}. Metoda nejdříve zkontroluje jeslti je \textit{centerPane} null a pokud není, tak se vytvoří nová vlna pomocí třídy \textit{WaveFactory}. Poté se připíše to \textit{Arraylistu activeWaves} a  přiřadí se jí instance třídy \textit{PixelManager}. 
+
+\subsubsection{Aktualizace scény}
+Pro aktualizaci se používá metoda \textit{updateWaves(BaseRoomControllerInterface controller)}. Tato metoda nejdříve vytvoří \textit{ArrayList wavesToRemove} a \textit{HashSet activePixelCoordinates}. Tyto datové struktury slouží na zapisování vln, které je potřeba odstranit a ke sledování \textit{Pixelů}, jenž jsou momentálně ve vlně. Dále se spustí for-cyklus iterující přes každou \textit{SoundWave} v \textit{activeWaves}. Pro každou z těchto vln se nejprve zavolá metoda \textit{grow()}, poté se zkontroluje zda je starší než 8 sekund a jestli je její amplituda  nižší nebo rovna nule. Pokud se tyto podmínky naplní, tak se vlna přiřadí do \textit{Arraylistu wavesToRemove} .  Následně se do \textit{activePixelCoordinates} přidají všechny pixely dané vlny pomocí metody \textit{wave.getactivePixelCoordinates()}. \\
+Potom, co se for-cylkus ukončí, tak se vynulují všechny pixely, které nejsou v žádné vlně,  zavolá se metoda \textit{checkWavesForReflections\\(BaseRoomControllerInterface controller)} (viz. kapitola 4.16.3) a smažou se všechny vlny, jenž jsou ve \textit{wavesToRemove}.
+
+
+\subsubsection{Odraz}
+Pokaždé když se aktualizuje scéna pomocí metody \textit{updateWaves()}, tak se zavolá metoda checkWavesForReflections(BaseRoomControllerInterface controller).\\
+\\
+\textbf{\textit{checkWavesForReflections(BaseRoomControllerInterface\\
+controller)}}\\
+Tato metoda znovu iteruje přes všechny vlny \textit{wave} v \textit{activeWaves}.  Nejdříve vytvoří  nový \textit{Point center}, který je stejný jako střed vlny. Potom program zkontroluje zda je \textit{center} v místnosti. Pokud je, tak se z vlny získají \textit{reflectionDistances} a spustí se for-cylkus, jenž iteruje přes všechny tyto vzdálenosti. Pokud se \textit{outerRadius} vlny rovná některé z těchto vzdáleností, tak se vytvoří nová přímka reprezentující danou stěnu, následně se pomocí třídy \textit{Calculator} vytvoří symetrický bod, jenž reprezentuje střed nové vlny a nakonec se vytvoří nová vlna s počátečním poloměrem \textit{outerRadius} a amplitudou o 50 menší.\\
+Pokud střed vlny neleží v místnosti, tak se zavolá metoda \textit{handleOutOfRectangleWave(SoundWave wave, Point center, BaseRoomControllerInterface controller)}.\\
+\\
+\textbf{\textit{\textit{handleOutOfRectangleWave(SoundWave wave, Point center, \\BaseRoomControllerInterface controller)}}}\\
+Tato metoda zpracovává vlny, jejichž střed neleží v místnosti a funguje následovně.
+Nejdříve se z dané vlny získají \textit{reflectionDistances}, dále se zavolají metody \textit{handleOutOfRectangleWaveForCorners(wave, center, controller) a handleDiagonalWavesForCorners(wave, center, controller)}, které zpracová-vají vzdálenosti ke středům (viz další odstavce), potom se zkontroluje, zda je střed vlny ve správné pozici a má správný poloměr. Zde je příklad těchto podmínek
+\begin{minted}{java}
+if(wave.isAboveRectangle(center.getX(), center.getY()) &&
+currentRadius == reflectionDistances[0]){...}
+else if (wave.isBellowRectangle(center.getX(), center.getY()) &&
+currentRadius == reflectionDistances[0]){...}
+\end{minted}
+
+Jestliže jsou tyto podmínky splněny, tak se zavolá metoda \textit{reflectWave} (viz další odstavce), která vytvoří novou symetrickou vlnu.\\
+\textbf{\textit{\\handleOutOfRectangleWaveForCorners(SoundWave wave, Point center, BaseRoomControllerInterface controller)}}\\
+Tato metoda se specializuje na odraz vln, které mají středy v sektorech 2,4,6,8 (viz. obrázek 5). Nejprve se zjistí, v jakém z těchto sektorů se střed nachází. Poté se zjistí, zda se \textit{outerRadius} rovná vzdálenosti od středu k některému z rohů a pokud ano tak se zavolá metoda \textit{reflectWave}, která vytvoří novou vlnu symetrickou vůči správné zdi. \\
+\\
+\textbf{\textit{handleDiagonalWavesForCorners(wave, center, controller)}}\\
+Tato metoda se stará o odrazy vln, jejichž středy leží v sektorech 1,3,7,9 (viz. obrázek 5). V této metodě se nejprve inicializují rohy místnosti a poloměr \textit{topLeft, bottomLeft, bottomRight, topRight, currentRadius}. Dále se zjistí v jakém sektoru střed leží. Pokud leží v sektoru jedna, tak se počítají vzdálenosti pouze k \textit{bottomLeft, bottomRight, topRight}  a analogicky je to i se středy v ostatních sektorech.  Jakmile se lokalizuje sektor, tak program zkontroluje, zda se \textit{outerRadius} rovná vzdálenosti středu k některému z rohů místnosti, jestli ano tak se vytvoří příslušná symetrická vlna pomocí metody\textit{ reflectWave}.  Zde je příklad jak taková podmínka vypadá. 
+\begin{minted} {java}
+if (wave.isAboveOnTheLeftOfRectangle(center.getX(),
+center.getY())) {
+    if (currentRadius== 
+    (int)wave.getCenter().distance(bottomLeft)){
+        reflectWave(wave, controller, 1);
+    }
+    if (wave.getRadius() == 
+    (int)wave.getCenter().distance(bottomRight)) {
+        Point pomocnyBod = 
+        calculator.calculateSymetricPoint
+        (center,controller.getRoomWalls().get(1));
+        reflectWave(pomocnyBod,
+        wave.getOuterRadius(), controller, 3, wave.getAmplitude());
+    }
+    if (currentRadius==
+    (int) wave.getCenter().distance(topRight)){
+        reflectWave(wave, controller, 3);
+    }
+
+\end{minted}
+\vspace{2cm}
+\textbf{\textit{reflectWave(SoundWave wave, BaseRoomControllerInterface controller, int wallIndex)}}\\
+Tato metoda se stará o vytváření odražených vln s pomocí \textit{SoundWave, BaseRoomControllerInterface a wallIndex}.  Nejprve se inicializuje střed vlny a  přímka, jenž reprezentuje stěnu, od které se vlna odráží. Poté se za pomoci třídy \textit{Calculator} vytvoří symetrický bod \textit{symetricPoint} a vytvoří se nová vlna se středem v symetrickém bodě, počátečním poloměrem \textit{outerRadius} a amplitudou o 50 menší. Metoda \textit{reflectWave(Point center, int currentRadius, BaseRoomControllerInterface controller, int wallIndex, int amplituda)} dělá úplně to samé jen za pomoci jiných parametrů.\\
+\\
+Třída \textit{WaveManager} má také metody \textit{resumeWaves(), pauseWaves(), resetWaves()}, tyto metody bud zastaví, znovu spustí nebo resetují animaci. Poslední metoda, kterou tato třída obsahuje, je  \textit{removeAllWaves(Pane centerPane)}. Ta odstraní všechny vlny ze scény.

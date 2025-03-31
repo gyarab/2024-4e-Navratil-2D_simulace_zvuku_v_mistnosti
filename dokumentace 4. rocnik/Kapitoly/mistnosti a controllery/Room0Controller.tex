@@ -1,0 +1,64 @@
+\subsection{Room0Controller}
+Tato třída se stará o logiku, rozvržení a  interakce se uživatelem. Přiřadí funkci jednotlivým tlačítkám, spravuje časovač a pokud uživatel klikne do místnosti tak pomocí ostatních tříd jako \textit{WaveManager, PixelManager, SoundWave ...} vytvoří novou zvukovou vlnu. Controller má následující metody:
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{setStage(Stage stage)}}} \newline
+Nastaví hlavní okno aplikace pro scénu Room0.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{initialize()}}} \newline 
+Inicializuje scénu, UI komponenty a další proměnné (např. stav obdélníku nebo tlačítek) při načtení ovladače.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{createTimeline()}}}  \newline
+Spustí časovač pro správu časově závislých událostí ve scéně.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{initializeRectangle(double x, double y)}}}  \newline
+Nastaví obdélník v místnosti na základě zadaných rozměrů.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{getXMin(), getXMax(), getYMin(), getYMax()}}}  \newline
+Vrátí minimální a maximální souřadnice x/y místnosti pro určení hranic nebo umístění prvků rozvržení.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{updateLayout()}}}  \newline
+Dynamicky upravuje velikost a pozici tlačítek nebo UI komponent místnosti podle jejích rozměrů.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{createOverlay() a overlayRectangles()}}}  \newline
+Odpovídají za vykreslení překrývajícich obdelníků.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{initializeLines(double xMin, double xMax, double yMin, double yMax)}}}\\
+Vytváří nové přímky pomocí třídy \textit{Line}, které reprezentují stěny místnosti. Tyto přímky jsou používány při počítání odrazu vlny, konkrétně k vytvoření vlny symetrické vůči dané stěně. Dále vytvoří seznam těchto přímek \textit{roomWalls} a rohů místnosti \textit{roomCorners}. 
+\newpage 
+\underline{\textbf{\textit{getRoomWalls()}}}  \newline
+Vrátí seznam čar představujících stěny místnosti.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{getRoomCorners()}}}  \newline
+Vrátí seznam bodů představujících rohy místnosti.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{handleButtonHlavniMenuClick()}}}  \newline
+Přepne scénu zpět do hlavního menu.
+
+\underline{\textbf{\textit{handleButtonStopClick()}}}  \newline
+Zpracovává uživatelskou interakci k zastavení časovače a vln.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{handleButtonResumeClick()}}}  \newline
+Obnoví pozastavenou aktivitu ve scéně .
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{handleButtonResetClick()}}}  \newline
+Obnoví stav místnosti do původního nastavení.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{updateTimerLabel()}}}  \newline
+Tato metoda odpovídá za aktualizování časovače.
+
+\vspace{0.3cm}  
+\underline{\textbf{\textit{handlePaneClick(MouseEvent event) }}}  \newline
+Zavolá se pokud uživatel klikne na \textit{centerPane}, pokud klikne do místnosti tím je myšleno do vykresleného čtverce tak pomocí třídy \textit{WaveManager} vytvoří zvukovou vlnu. Nejprve se vytvoří animace a potom se volá metoda \textit{updateWaves}  ve třídě \textit{WaveManager}. 
